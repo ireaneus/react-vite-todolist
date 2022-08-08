@@ -8,11 +8,12 @@ import {
   Tag,
 } from '@blueprintjs/core';
 import { useState } from 'react';
+import useLocalStorage from './useLocalStorage';
 
 function App() {
   const [userInput, setUserInput] = useState('');
 
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useLocalStorage('todo-items', []);
 
   const addItem = (e) => {
     e.preventDefault();
