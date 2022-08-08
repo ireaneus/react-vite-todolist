@@ -1,34 +1,84 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import {
+  Button,
+  Card,
+  Checkbox,
+  ControlGroup,
+  Elevation,
+  InputGroup,
+  Tag,
+} from '@blueprintjs/core';
+import { useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userInput, setUserInput] = useState('');
+
+  const [todoList, setTodoList] = useState([]);
+
+  const addItem = (e) => {
+    e.preventDefault();
+    const trimmedUserInput = userInput.trim();
+    if (trimmedUserInput) {
+      setTodoList((existingItems) => [
+        ...existingItems,
+        { name: trimmedUserInput, finished: false },
+      ]);
+      setUserInput('');
+    }
+  };
+
+  const toggleTask = (index) => {
+    setTodoList((existingItems) =>
+      existingItems.map((item, i) =>
+        index === i ? { ...item, finished: !item.finished } : item
+      )
+    );
+  };
+
+  const deleteTask = (index) => {
+    setTodoList((existingItems) =>
+      existingItems.filter((item, i) => index !== i)
+    );
+  };
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Card elevation={Elevation.TWO}>
+        <h2 className="heading">To-do List</h2>
+        <form onSubmit={addItem}>
+          <ControlGroup fill={true} vertical={false}>
+            <InputGroup
+              placeholder="Add a task..."
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+            <Button type="submit" intent="primary">
+              Add
+            </Button>
+          </ControlGroup>
+        </form>
+        <div className="items-list">
+          {todoList.map((item, index) => (
+            <Tag
+              key={index + item.name}
+              large
+              minimal
+              multiline
+              onRemove={() => deleteTask(index)}
+            >
+              <Checkbox
+                checked={item.finished}
+                onChange={() => toggleTask(index)}
+              >
+                <span className={item.finished ? 'finished' : ''}>
+                  {item.name}
+                </span>
+              </Checkbox>{' '}
+            </Tag>
+          ))}
+        </div>
+      </Card>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
