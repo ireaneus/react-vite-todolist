@@ -27,6 +27,12 @@ function App() {
     }
   };
 
+  const onMakeDecision = () => {
+    const randNum = Math.floor(Math.random() * todoList.length);
+    const list = todoList[randNum];
+    console.log(list);
+  };
+
   const toggleTask = (index) => {
     setTodoList((existingItems) =>
       existingItems.map((item, i) =>
@@ -77,6 +83,8 @@ function App() {
             </Tag>
           ))}
         </div>
+            <p></p>
+        <Button onClick={onMakeDecision}>Which one should I do</Button>
       </Card>
     </div>
   );
