@@ -12,7 +12,6 @@ import useLocalStorage from './useLocalStorage';
 
 function App() {
   const [userInput, setUserInput] = useState('');
-
   const [todoList, setTodoList] = useLocalStorage('todo-items', []);
 
   const addItem = (e) => {
@@ -83,8 +82,10 @@ function App() {
             </Tag>
           ))}
         </div>
-            <p></p>
-        <Button onClick={onMakeDecision}>Which one should I do</Button>
+        <p></p>
+        <Button disabled={todoList.length === 0} onClick={onMakeDecision}>
+          Which one should I do
+        </Button>
       </Card>
     </div>
   );
